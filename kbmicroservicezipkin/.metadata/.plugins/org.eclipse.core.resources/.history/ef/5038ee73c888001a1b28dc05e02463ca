@@ -1,0 +1,5 @@
+package com.currency.conversionfactor.dao;
+
+public interface ConversionFactorRepo {
+
+}

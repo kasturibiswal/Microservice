@@ -1,0 +1,80 @@
+package com.currency.conversionfactor.controller;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.currency.conversionfactor.bean.ConversionFactor;
+import com.currency.conversionfactor.bean.ResponseStatus;
+import com.currency.conversionfactor.dao.ConversionFactorRepo;
+@RestController
+public class ConversionFactorController {
+
+
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	@ Autowired
+	private ConversionFactorRepo conversionFactoryRepo;
+	
+
+	@PostMapping(path = "/addConversionfactor")
+	public ResponseStatus addcurrencyconversionFactor(@RequestBody ConversionFactor conversionFactor)
+	{
+		logger.debug("executing addcurrencyconversionFactor");
+		conversionFactoryRepo.save(conversionFactor);
+		return new ResponseStatus("Success",null);
+		
+	}
+	
+	
+	
+	@PutMapping(path = "/updateConversionFactor")
+	public ResponseStatus updateCurrencyConversionFactor(@RequestBody ConversionFactor conversionFactor)
+	{
+		
+		ConversionFactor conversionFactorTemp = conversionFactoryRepo.findByCurrency(conversionFactor.getCurrency());
+
+		if (null==conversionFactorTemp)
+			{
+			return new ResponseStatus("Update Failed","Currency  Not Found");
+			}
+		
+		conversionFactorTemp.setConversionFactor(conversionFactor.getConversionFactor());
+		conversionFactoryRepo.save(conversionFactorTemp);
+		
+		return new ResponseStatus("Success",null);
+		
+	}
+	
+	@GetMapping(path = "/getConversionfactor/{currency}")
+	public Double getCurrencyConversionFactor(@PathVariable String currency)
+	{
+		ConversionFactor conversionFactor =  new ConversionFactor();
+		conversionFactor = conversionFactoryRepo.findByCurrency(currency);
+
+		if (null==conversionFactor)
+			{
+			System.out.println("conversionFactor not found***");
+			throw new RuntimeException("Conversion Factor  Not Available for Currency "+currency);
+			}
+	
+		
+		return conversionFactor.getConversionFactor();
+	}
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+}

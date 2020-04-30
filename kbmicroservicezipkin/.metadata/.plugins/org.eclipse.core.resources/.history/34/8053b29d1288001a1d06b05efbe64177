@@ -1,0 +1,36 @@
+package com.currency.conversion.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
+@Service
+public class CurrencyConversionDelegate {
+	
+	@Autowired
+	CurrencyConversionServiceProxy proxyService;
+	@HystrixCommand(fallbackMethod = "fallBackGetCurrencyConversionFactor")
+	public Double getCurrencyConversionFactor(String countryCode)
+	{
+		try {
+		Double conversionFactor =proxyService.getConversionFactor(countryCode);
+		
+		return conversionFactor;
+		}
+		catch(RuntimeException ex)
+		{
+			throw new RuntimeException("Currency Conversion service Not Available");
+		}
+		
+	}
+	
+	public Double fallBackGetCurrencyConversionFactor(String countryCode)
+	{
+		System.out.println("Exception from CurrencyConversion Service, executing fallBackGetCurrencyConversionFactor***");
+		Double defaultValue = 0d;
+		return defaultValue;
+		
+	}
+
+}

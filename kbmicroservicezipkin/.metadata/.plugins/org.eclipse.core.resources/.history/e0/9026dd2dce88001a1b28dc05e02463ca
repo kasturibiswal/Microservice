@@ -1,0 +1,89 @@
+package com.currency.conversionfactor.controller;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.currency.conversionfactor.bean.ConversionFactor;
+import com.currency.conversionfactor.bean.CurrencyConversionFactor;
+import com.currency.conversionfactor.bean.ResponseStatus;
+import com.currency.conversionfactor.dao.ConversionFactorRepo;
+import com.currency.conversionfactor.dao.CurrencyConversionFactoryRepo;
+
+@RestController
+public class ConversionFactorController {
+
+	@ Autowired
+	private CurrencyConversionFactoryRepo CurrencyConversionFactoryRepo;
+	
+	@ Autowired
+	private ConversionFactorRepo conversionFactoryRepo;
+	
+
+	@PostMapping(path = "/addCurrencyConversionFactor/id/{id}currency/{currency}/country/{country}/factor/{factor}")
+	public ResponseStatus addcurrencyconversionFactor(@PathVariable Long id, @PathVariable String currency,@PathVariable String country,@PathVariable Double factor)
+	{
+		ConversionFactor conversionFactor =  new ConversionFactor();
+		conversionFactor.setId(id);
+		conversionFactor.setCurrency(currency);
+		conversionFactor.setCountry(country);
+		conversionFactor.setConversionFactor(factor);	
+		conversionFactoryRepo.save(conversionFactor);
+		return new ResponseStatus("Success",null);
+		
+	}
+	
+	
+	
+	@PutMapping(path = "/updateCurrencyConversionFactor/currency/{countryCode}/factor/{factor}")
+	public ResponseStatus updateCurrencyConversionFactor(@PathVariable String currency,@PathVariable Double factor)
+	{
+		
+		ConversionFactor conversionFactor =  new ConversionFactor();
+		Optional<CurrencyConversionFactor> CurrencyConversionFactorOptional = conversionFactoryRepo.findById(currency)(countryCode);
+
+		if (!CurrencyConversionFactorOptional.isPresent())
+			{
+			return new ResponseStatus("Update Failed","Country Code Not Found");
+			}
+		
+		CurrencyConversionFactor.setCountryCode(countryCode);
+		CurrencyConversionFactor.setConversionFactor(conversionFactor);
+		CurrencyConversionFactoryRepo.save(CurrencyConversionFactor);
+		
+		return new ResponseStatus("Success",null);
+		
+	}
+	
+	@GetMapping(path = "/getConversionFactor/countryCode/{countryCode}")
+	public Double getConversionFactor(@PathVariable String countryCode)
+	{
+		Double conversionFactor = 0d;
+		Optional<CurrencyConversionFactor> CurrencyConversionFactorOptional = CurrencyConversionFactoryRepo.findById(countryCode);
+
+		if (CurrencyConversionFactorOptional.isPresent())
+			{
+			conversionFactor = CurrencyConversionFactorOptional.get().getConversionFactor();
+			System.out.println("conversionFactor = "+conversionFactor);
+			}
+		else {
+			System.out.println("conversionFactor not found***");
+			throw new RuntimeException("Not Available");
+		}
+		
+		return conversionFactor;
+	}
+	
+	
+	
+	
+	
+
+
+
+}

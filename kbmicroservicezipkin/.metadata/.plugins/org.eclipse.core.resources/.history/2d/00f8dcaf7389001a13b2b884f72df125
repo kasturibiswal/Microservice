@@ -1,0 +1,1 @@
+insert into conversion_factor(id,currency,country,conversion_factor) values(1001,'GBP','GB',1.29);

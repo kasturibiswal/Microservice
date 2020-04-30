@@ -1,0 +1,1 @@
+insert into currency_conversion_factor values(GBP','GB',1.29);

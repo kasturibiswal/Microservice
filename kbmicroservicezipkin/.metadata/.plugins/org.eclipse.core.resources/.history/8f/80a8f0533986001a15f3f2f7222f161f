@@ -1,0 +1,16 @@
+package com.currency.conversion.controller;
+
+import org.springframework.cloud.netflix.ribbon.RibbonClient;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+//@FeignClient("currency-conversion-factor-service")
+@FeignClient("zuul-gateway-server") 
+@RibbonClient("currency-conversion-factor-service")
+public interface CurrencyConversionServiceProxy {
+	
+	@GetMapping(path = "/getConversionFactor/countryCode/{countryCode}")
+	public Double getConversionFactor(@PathVariable String countryCode);
+
+}

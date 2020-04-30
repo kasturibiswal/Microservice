@@ -1,0 +1,16 @@
+package com.test;
+
+public class TestCurrencyConversion {
+	
+	public static void main(String[] args) {
+		Double amount = 100.0;
+		Double fromFactor = 1.29;
+		Double toFactor = 0.014;
+		Double fromDollarAmount = amount*fromFactor;
+		//Double toDollarAmount = 1/toFactor;
+		Double convertedAmount = fromDollarAmount*toFactor;
+		System.out.println("convertedAmount = "+convertedAmount);
+		
+	}
+
+}

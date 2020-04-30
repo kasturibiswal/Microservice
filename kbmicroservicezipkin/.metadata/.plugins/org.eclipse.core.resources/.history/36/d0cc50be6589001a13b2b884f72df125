@@ -1,0 +1,15 @@
+spring.application.name=conversionfactor-service
+server.port=8400
+spring.jpa.show-sql=true
+spring.h2.console.enabled=true
+spring.datasource.platform=h2
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+# Custom H2 Console URL
+spring.h2.console.path=/h2
+logging.file.name=c:/temp/application.log
+debug=true
+#logging.level.org.springframework=ERROR 
+logging.level.com.currency=DEBUG

@@ -1,0 +1,8 @@
+package com.currency.conversionfactor.bean;
+
+public class Snippet {
+	public static void main(String[] args) {
+		Currency_Conversion_Factor
+	}
+}
+

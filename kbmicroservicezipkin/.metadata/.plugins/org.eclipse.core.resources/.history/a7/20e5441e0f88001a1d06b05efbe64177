@@ -1,0 +1,45 @@
+package com.currency.conversion.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
+@RestController
+public class CurrencyConversionController {
+	@Autowired
+	CurrencyConversionServiceProxy proxyService;
+	
+	@GetMapping(path = "/convertCurrency/countryCode/{countryCode}/amount/{amount}")
+	public Double convertCurrency(@PathVariable String countryCode, @PathVariable Double amount)
+	{
+		Double conversionFactor =proxyService.getConversionFactor(countryCode);
+		amount = amount*conversionFactor;
+		return amount;
+	}
+
+	
+	@HystrixCommand(fallbackMethod = "fallBackGetCurrencyConversionFactor")
+	public Double getCurrencyConversionFactor(String countryCode)
+	{
+		try {
+		Double conversionFactor =proxyService.getConversionFactor(countryCode);
+		
+		return conversionFactor;
+		}
+		catch(RuntimeException ex)
+		{
+			throw new RuntimeException("Not Available");
+		}
+		
+	}
+	
+	public Double fallBackGetCurrencyConversionFactor(String countryCode)
+	{
+		Double defaultValue = 0d;
+		return defaultValue;
+		
+	}
+}

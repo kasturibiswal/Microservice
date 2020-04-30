@@ -1,0 +1,21 @@
+package com.currency.conversion.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class CurrencyConversionController {
+	@Autowired
+	CurrencyConversionServiceProxy proxyService;
+	
+	@GetMapping(path = "/convertCurrency/countryCode/{countryCode}/amount/{amount}")
+	public Double convertCurrency(@PathVariable String countryCode, @PathVariable Double amount)
+	{
+		Double conversionFactor =proxyService.getConversionFactor(countryCode);
+		amount = amount*conversionFactor;
+		return amount;
+	}
+
+}

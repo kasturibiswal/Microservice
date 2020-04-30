@@ -1,0 +1,13 @@
+package com.currency.conversion.controller;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+@FeignClient(name="currency-conversion-factor-service",url="localhost:8100") 
+public interface CurrencyConversionServiceProxy {
+	
+	@GetMapping(path = "/getConversionFactor/countryCode/{countryCode}")
+	public Double getConversionFactor(@PathVariable String countryCode);
+
+}

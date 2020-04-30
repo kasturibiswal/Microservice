@@ -1,0 +1,64 @@
+package com.currency.conversionfactor.bean;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name ="Conversion_Factor")
+public class ConversionFactor {
+	@Id
+	private Long id;
+	private String currencyCode;
+	private String countryCode;	
+	private Double factor;	
+	
+	
+	public ConversionFactor() {
+		super();
+	}
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+	public String getCountryCode() {
+		return countryCode;
+	}
+
+
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
+	}
+
+
+	public String getCurrencyCode() {
+		return currencyCode;
+	}
+
+
+	public void setCurrencyCode(String currencyCode) {
+		this.currencyCode = currencyCode;
+	}
+
+
+	public Double getFactor() {
+		return factor;
+	}
+
+
+	public void setFactor(Double factor) {
+		this.factor = factor;
+	}
+	
+	
+	
+
+}

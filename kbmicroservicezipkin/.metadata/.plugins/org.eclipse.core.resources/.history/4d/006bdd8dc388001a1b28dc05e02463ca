@@ -1,0 +1,4 @@
+insert into currency_conversion_factor values('IND',1.2);
+insert into currency_conversion_factor values('US',3.5);
+
+insert into Conversion_Factor values(1001,'GBP','GB',1.29);

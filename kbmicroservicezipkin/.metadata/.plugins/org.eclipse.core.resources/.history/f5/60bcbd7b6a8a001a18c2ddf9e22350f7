@@ -1,0 +1,35 @@
+package com.currency.conversionfactor.bean;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name ="Currency_Conversion_Factor")
+public class CurrencyConversionFactor {
+	@Id
+	private String countryCode;
+	private Double conversionFactor;
+	
+	
+	public CurrencyConversionFactor() {
+		super();
+	}
+	
+	public String getCountryCode() {
+		return countryCode;
+	}
+
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
+	}
+
+	public Double getConversionFactor() {
+		return conversionFactor;
+	}
+	public void setConversionFactor(Double conversionFactor) {
+		this.conversionFactor = conversionFactor;
+	}
+	
+
+}

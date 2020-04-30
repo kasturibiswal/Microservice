@@ -1,0 +1,84 @@
+package com.currency.conversion.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.currency.conversion.bean.ConversionFactorResponse;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
+@Service
+public class CurrencyConversionDelegate {
+	
+	@Autowired
+	CurrencyConversionServiceProxy proxyService;
+	
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	@HystrixCommand(fallbackMethod = "fallBackGetCurrencyConversionFactor")
+	public Double getCurrencyConversionFactor(String countryCode)
+	{
+		try {
+		Double conversionFactor =proxyService.getConversionFactor(countryCode);
+		System.out.println("conversionFactor from service call"+conversionFactor);
+		
+		return conversionFactor;
+		}
+		catch(RuntimeException ex)
+		{
+			throw new RuntimeException("Currency Conversion service Not Available");
+		}
+		
+	}
+	
+	public Double fallBackGetCurrencyConversionFactor(String countryCode)
+	{
+		System.out.println("Exception from CurrencyConversion Service, executing fallBackGetCurrencyConversionFactor***");
+		Double defaultValue = 0d;
+		return defaultValue;
+		
+	}
+	
+	
+	@HystrixCommand(fallbackMethod = "fallBackGetConversionFactor")
+	public Double getConversionFactor(String currency)
+	{
+		try {
+		Double conversionFactor =proxyService.getCurrencyConversionFactor(currency);
+		System.out.println("conversionFactor from service call for Currency"+currency +" ="+conversionFactor);
+		
+		return conversionFactor;
+		}
+		catch(RuntimeException ex)
+		{
+			throw new RuntimeException("Currency Conversion service Not Available for Currency"+currency);
+		}
+		
+	}
+	
+	public Double fallBackGetConversionFactor(String currency)
+	{
+		System.out.println("Exception from CurrencyConversion Service, executing fallBackGetCurrencyConversionFactor***");
+		Double defaultValue = 0d;
+		return defaultValue;
+		
+	}
+	
+	public ConversionFactorResponse getConversionFactor(String fromCurrency, String toCurrency)
+	{
+		
+		logger.debug("Executing getConversionFactor");
+		try {
+		//ConversionFactorResponse conversionFactorResponse = restTemplate.getForObject(baseURL+"/"+fromCurrency+"/"+toCurrency, ConversionFactorResponse.class);
+		ConversionFactorResponse conversionFactorResponse =proxyService.getCurrencyConversionFactor(fromCurrency, toCurrency) ;
+		logger.debug("conversionFactorResponsefrom service = "+conversionFactorResponse);
+		return conversionFactorResponse;
+		}
+		catch(RuntimeException ex)
+		{
+			throw new RuntimeException("Currency Conversion factor  service Not Available");
+		}
+		
+	}
+	
+
+}
