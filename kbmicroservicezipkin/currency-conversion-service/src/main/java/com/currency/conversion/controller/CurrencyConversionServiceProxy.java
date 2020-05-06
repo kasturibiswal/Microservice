@@ -16,7 +16,7 @@ public interface CurrencyConversionServiceProxy {
 	
 	/* @GetMapping(path = "/conversionfactor/{fromCurrency}/{toCurrency}") public
 	 ConversionFactorResponse getCurrencyConversionFactor(@PathVariable String fromCurrency,@PathVariable String toCurrency);
-*/	
+*/
 
 	/**
 	 * for zull
@@ -24,7 +24,7 @@ public interface CurrencyConversionServiceProxy {
 	 * @param toCurrency
 	 * @return
 	 */
-	 @GetMapping(path = "currency-conversion-factor-service/conversionfactor/{fromCurrency}/{toCurrency}")
+	 @GetMapping(path = "/currency-conversion-factor-service/conversionfactor/{fromCurrency}/{toCurrency}")
 	  public ConversionFactorResponse getCurrencyConversionFactor(@PathVariable	 String fromCurrency,@PathVariable String toCurrency);
 	 
 
