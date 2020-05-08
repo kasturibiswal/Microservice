@@ -4,11 +4,16 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
+import com.authentication.dao.JwtToken;
+import com.authentication.dao.JwtTokenRepository;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -23,6 +28,9 @@ public class JwtTokenUtil implements Serializable {
 
 	@Value("${jwt.secret}")
 	private String secret;
+	
+	  @Autowired
+	    private JwtTokenRepository jwtTokenRepository;
 
 	//retrieve username from jwt token
 	public String getUsernameFromToken(String token) {
@@ -52,7 +60,11 @@ public class JwtTokenUtil implements Serializable {
 	//generate token for user
 	public String generateToken(UserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<>();
-		return doGenerateToken(claims, userDetails.getUsername());
+		String token =  doGenerateToken(claims, userDetails.getUsername());
+		 System.out.println("UserName"+userDetails.getUsername());
+		 jwtTokenRepository.save(new JwtToken(userDetails.getUsername(),token));
+		
+		return token;
 	}
 
 	//while creating the token -
@@ -72,4 +84,13 @@ public class JwtTokenUtil implements Serializable {
 		final String username = getUsernameFromToken(token);
 		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
 	}
+	
+	 public String getTokenFromDB () {
+		 Optional<JwtToken> tokeninDb =  jwtTokenRepository.findById(secret);
+		 if(tokeninDb.isPresent()) {
+			 JwtToken jwtToken = tokeninDb.get();
+			 return jwtToken.getToken();
+		 }
+		 return null;
+	    }
 }
