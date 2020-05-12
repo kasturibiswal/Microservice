@@ -1,0 +1,14 @@
+server:
+  port: 9292
+
+spring:  security:    user:      name: kasturi
+      password: kasturi123
+      roles: ADMIN,USER  application:    name: currency-auth-server
+
+security:  oauth2:    client:      client-id: currency
+      client-secret: currencysecret
+      access-token-validity-seconds: 3600
+      authorized-grant-types: refresh_token,authrization_code,password,client_credentials
+      scope: READ,WRITE
+
+eureka:  client:    service-url:      default-zone: http://localhost:8761/eureka                    
